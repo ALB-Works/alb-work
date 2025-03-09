@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -11,8 +13,16 @@ const Login = () => {
 
     
     if (email && password) {
-      console.log("User logged in:", { email, password });
-      navigate("/profile"); // ✅ Redirect to Profile Page
+      axios.post("https://backend-2-dnnp.onrender.com/login", { email, password })
+        .then(response => {
+          console.log("Login successful:", response.data);
+          navigate("/profile"); // ✅ Redirect to Profile Page
+        })
+        .catch(error => {
+          console.error("Login failed:", error);
+          alert("Login failed. Please check your credentials.");
+        });
+
     } else {
       alert("Please enter valid credentials.");
     }
